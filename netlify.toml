@@ -5,6 +5,12 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Admin panel
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
 # SPA-style fallback (single page; harmless and future-proof)
 [[redirects]]
   from = "/*"

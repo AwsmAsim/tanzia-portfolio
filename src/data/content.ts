@@ -13,6 +13,14 @@ export const profile = {
   phone: '+91 75428 28405',
   phoneHref: '+917542828405',
   linkedin: 'https://www.linkedin.com/in/tanziamehnaz/',
+  portraitUrl: '',
+  deskUrl: '',
+  heroTitle: 'Transforming brands into',
+  heroTitleEm: 'growth powerhouses.',
+  heroCTA1: "Let's work together",
+  heroCTA2: 'See the results',
+  heroBadgeStat: '100X',
+  heroBadgeLabel: 'share of voice',
 }
 
 export const heroSub =
@@ -47,6 +55,7 @@ export type CaseStudy = {
   headline: string
   metrics: { label: string; from?: string; to: string }[]
   blurb: string
+  imageUrl?: string
   accent?: 'gold' | 'forest'
 }
 

@@ -1,22 +1,10 @@
 import { useReveal } from './hooks/useReveal'
+import { useSiteContent } from './hooks/useSiteContent'
 import { Nav } from './components/Nav'
 import { Logo, Contour } from './components/Logo'
 import { Counter } from './components/Counter'
-import portrait from './assets/images/tanzia-portrait.jpg'
-import desk from './assets/images/tanzia-desk.jpg'
-import {
-  profile,
-  heroSub,
-  stats,
-  about,
-  caseStudies,
-  experience,
-  brands,
-  services,
-  processSteps,
-  packages,
-  testimonials,
-} from './data/content'
+import portraitFallback from './assets/images/tanzia-portrait.jpg'
+import deskFallback from './assets/images/tanzia-desk.jpg'
 import './styles/app.css'
 
 function Arrow() {
@@ -28,7 +16,12 @@ function Arrow() {
 }
 
 export default function App() {
-  useReveal()
+  const { content } = useSiteContent()
+  const { profile, heroSub, stats, about, caseStudies, experience, brands, services, processSteps, packages, testimonials } = content
+  useReveal(content)
+
+  const portraitSrc = profile.portraitUrl || portraitFallback
+  const deskSrc = profile.deskUrl || deskFallback
 
   return (
     <>
@@ -42,15 +35,15 @@ export default function App() {
             <div className="hero__copy">
               <p className="eyebrow reveal">The Socials Glow · {profile.pillars.join(' · ')}</p>
               <h1 className="hero__title reveal">
-                Transforming brands into <em>growth&nbsp;powerhouses.</em>
+                {profile.heroTitle} <em>{profile.heroTitleEm}</em>
               </h1>
               <p className="hero__sub reveal">{heroSub}</p>
               <div className="hero__actions reveal">
                 <a href="#contact" className="btn btn--primary">
-                  Let’s work together <Arrow />
+                  {profile.heroCTA1} <Arrow />
                 </a>
                 <a href="#work" className="btn btn--ghost">
-                  See the results
+                  {profile.heroCTA2}
                 </a>
               </div>
               <p className="hero__meta reveal">
@@ -62,13 +55,13 @@ export default function App() {
 
             <div className="hero__media reveal">
               <div className="hero__photo">
-                <img src={portrait} alt="Tanzia Mehnaz" loading="eager" />
+                <img src={portraitSrc} alt="Tanzia Mehnaz" loading="eager" />
               </div>
               <div className="hero__badge">
                 <Logo size={30} />
                 <div>
-                  <strong>100X</strong>
-                  <span>share of voice</span>
+                  <strong>{profile.heroBadgeStat}</strong>
+                  <span>{profile.heroBadgeLabel}</span>
                 </div>
               </div>
             </div>
@@ -111,7 +104,7 @@ export default function App() {
         <section className="section about" id="about">
           <div className="container about__grid">
             <div className="about__media reveal">
-              <img src={desk} alt="Tanzia Mehnaz at work" loading="lazy" />
+              <img src={deskSrc} alt="Tanzia Mehnaz at work" loading="lazy" />
               <div className="about__sticker">
                 <span>4+ yrs</span>
                 <small>building growth engines</small>
@@ -147,6 +140,11 @@ export default function App() {
             <div className="work__list">
               {caseStudies.map((cs, i) => (
                 <article className={`case reveal ${cs.accent === 'gold' ? 'case--gold' : ''}`} key={cs.client}>
+                  {cs.imageUrl && (
+                    <div className="case__image">
+                      <img src={cs.imageUrl} alt={cs.client} loading="lazy" />
+                    </div>
+                  )}
                   <div className="case__index">{String(i + 1).padStart(2, '0')}</div>
                   <div className="case__head">
                     <h3 className="case__client">{cs.client}</h3>
@@ -176,7 +174,7 @@ export default function App() {
         <section className="section section--dark experience">
           <div className="container">
             <p className="eyebrow reveal">Experience</p>
-            <h2 className="section-title reveal">Where I’ve driven growth.</h2>
+            <h2 className="section-title reveal">Where I've driven growth.</h2>
             <div className="timeline">
               {experience.map((e) => (
                 <div className="tl-item reveal" key={e.role + e.org}>
@@ -233,7 +231,7 @@ export default function App() {
             <p className="eyebrow reveal">Packages</p>
             <h2 className="section-title reveal">Pick a starting point.</h2>
             <p className="section-lead reveal">
-              Every engagement is tailored — customisation is always available. Let’s talk and shape
+              Every engagement is tailored — customisation is always available. Let's talk and shape
               the right fit.
             </p>
             <div className="packages__grid">
@@ -268,7 +266,7 @@ export default function App() {
             <div className="testimonials__grid">
               {testimonials.map((t) => (
                 <figure className="quote reveal" key={t.name}>
-                  <span className="quote__mark">”</span>
+                  <span className="quote__mark">"</span>
                   <blockquote>{t.quote}</blockquote>
                   <figcaption>
                     <strong>{t.name}</strong>
@@ -284,12 +282,12 @@ export default function App() {
         <section className="section section--dark contact" id="contact">
           <Contour className="contact__contour" />
           <div className="container contact__inner">
-            <p className="eyebrow reveal">Let’s work together</p>
+            <p className="eyebrow reveal">Let's work together</p>
             <h2 className="contact__title reveal">
               Your brand could be the <em>next growth story.</em>
             </h2>
             <p className="section-lead reveal">
-              Tell me about your brand and where you want to be. I’ll show you how to get there
+              Tell me about your brand and where you want to be. I'll show you how to get there
               organically.
             </p>
             <div className="contact__actions reveal">

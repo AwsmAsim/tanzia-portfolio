@@ -8,9 +8,9 @@ import { useEffect } from 'react'
  * rAF is throttled/paused in background or non-focused tabs, which would
  * leave hero content stuck hidden. A 0ms timeout always fires.
  */
-export function useReveal() {
+export function useReveal(dep?: unknown) {
   useEffect(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>('.reveal'))
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.reveal:not(.is-visible)'))
     if (els.length === 0) return
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -48,5 +48,6 @@ export function useReveal() {
       window.clearTimeout(t)
       io.disconnect()
     }
-  }, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dep])
 }
